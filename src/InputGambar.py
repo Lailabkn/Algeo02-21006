@@ -17,3 +17,9 @@ def load_images(folder):
         if img is not None:
             images.append(img)
     return images
+
+def resize_images(images, size):
+    resized_images = []
+    for image in images:
+        resized_images.append(cv2.resize(image, size))
+    return resized_images

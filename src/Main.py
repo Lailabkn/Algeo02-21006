@@ -2,5 +2,5 @@ import os
 from Matrix import *
 from InputGambar import *
 
-S = load_images(".\dataset")
+S = resize_images(load_images(".\dataset"), (256, 256))
 displayListMatrix(S)

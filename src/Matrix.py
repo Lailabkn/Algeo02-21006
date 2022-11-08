@@ -107,4 +107,3 @@ def listMatrixMinus (L, m):
         result[i] = minusMatrix(L[i], m)
         i = i + 1
     return (result)
-

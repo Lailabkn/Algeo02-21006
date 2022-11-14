@@ -1,0 +1,1 @@
+print(eigenvalue(S[0]))

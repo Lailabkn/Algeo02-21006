@@ -9,7 +9,6 @@ def list_files(directory):
             list_of_files.append(os.path.join(folder, filename))
     return list_of_files
 
-
 def load_images(folder):
     images = []
     for image in list_files(folder):

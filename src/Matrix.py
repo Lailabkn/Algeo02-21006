@@ -1,5 +1,6 @@
 #PROGRAM LibraryMatriks
-#Spesifikasi :
+#Spesifikasi: Berisi fungsi-fungsi untuk mengoperasikan matriks dan senarai matriks
+#Spesifikasi: MATRIX | LIST OF MATRIX
 
 #FUNGSI DAN PROSEDUR
 #Membuat dan Menampilkan Matriks
@@ -36,6 +37,15 @@ def addMatrix (matrix1, matrix2):
     for i in range(0, row, 1):
        for j in range(0, col, 1):
            result[i][j] = matrix1[i][j] + matrix2[i][j]
+    return (result)
+
+def minusMatrixAbs (matrix1, matrix2):
+    row = len(matrix1)
+    col = len(matrix1[0])
+    result = createMatrix(row, col)
+    for i in range(0, row, 1):
+       for j in range(0, col, 1):
+           result[i][j] = abs(matrix1[i][j] - matrix2[i][j])
     return (result)
 
 def minusMatrix (matrix1, matrix2):
@@ -75,15 +85,25 @@ def transposeMatrix (m):
            result[i][j] = m[j][i]
     return (result)
 
-def copyMatrix (m):
+def LambdaIMinA (m, y):
+    #'y' adalah representasi lambda
+    
+    # Inisialisasi Matriks Indentitas #
     row = len(m)
     col = len(m[0])
-    result = createMatrix(row, col)
+    I = createMatrix(row, col)
     for i in range(0, row, 1):
-       for j in range(0, col, 1):
-           result[i][j] = m[i][j]
-    return (result)
+        for j in range(0, col, 1):
+            if (i == j):
+                I[i][j] = y
+    # Mengurangi dengan 'A' #
+    result = minusMatrix(I, m)
+    return(result)
 
+#--------------------------------------------------------------------#
+#------------------------KELOMPOK DETERMINAN-------------------------#
+#--------------------------------------------------------------------#
+# Referensi: https://integratedmlai.com/find-the-determinant-of-a-matrix-with-pure-python-without-numpy-or-scipy/
 def determinant (A):
     total = 0.0
     # Section 1: store indices in list for row referencing
@@ -98,7 +118,7 @@ def determinant (A):
     #      call this function
     for fc in indices: # A) for each focus column, ...
         # find the submatrix ...
-        As = copy_matrix(A) # B) make a copy, and ...
+        As = copyMatrix(A) # B) make a copy, and ...
         As = As[1:] # ... C) remove the first row
         height = len(As) # D) 
  
@@ -115,42 +135,16 @@ def determinant (A):
  
     return total
 
-def copy_matrix(M):
-    """
-    Creates and returns a copy of a matrix.
-        :param M: The matrix to be copied
- 
-        :return: A copy of the given matrix
-    """
-    # Section 1: Get matrix dimensions
-    rows = len(M)
-    cols = len(M[0])
- 
-    # Section 2: Create a new matrix of zeros
-    MC = zeros_matrix(rows, cols)
- 
-    # Section 3: Copy values of M into the copy
-    for i in range(rows):
-        for j in range(cols):
-            MC[i][j] = M[i][j]
- 
-    return MC
+def copyMatrix (m):
+    row = len(m)
+    col = len(m[0])
+    result = createMatrix(row, col)
+    for i in range(0, row, 1):
+       for j in range(0, col, 1):
+           result[i][j] = m[i][j]
+    return (result)
+#--------------------------------------------------------------------#
 
-def zeros_matrix(rows, cols):
-    """
-    Creates a matrix filled with zeros.
-        :param rows: the number of rows the matrix should have
-        :param cols: the number of columns the matrix should have
- 
-        :return: list of lists that form the matrix
-    """
-    M = []
-    while len(M) < rows:
-        M.append([])
-        while len(M[-1]) < cols:
-            M[-1].append(0.0)
- 
-    return M
 
 #Operasi Terhadap List Matriks
 def meanElements (L):
@@ -165,13 +159,51 @@ def meanElements (L):
     result = matrixDivide(result, N)
     return (result)
 
-def listMatrixMinus (L, m):
+def listMatrixMinusAbs (L, m):
     N = len(L)
     row = len(L[0])
     col = len(L[0][0])
     result = createListMatrix(N, row, col)
     i = 0
     while (i < N):
-        result[i] = minusMatrix(L[i], m)
+        result[i] = minusMatrixAbs(L[i], m)
         i = i + 1
     return (result)
+
+def makeCovarians (L):
+    N = len(L)
+    row = len(L[0])
+    col = len(L[0][0])
+    result = createListMatrix(N, row, col)
+    i = 0
+    while (i < N):
+        T = transposeMatrix(L[i])
+        result[i] = multiplyMatrix(L[i], T)
+        i = i + 1
+    return (result)
+
+def typeCasting (L):
+    N = len(L)
+    row = len(L[0])
+    col = len(L[0][0])
+    for i in range(0, N, 1):
+        for j in range(0, row, 1):
+            for k in range(0, col, 1):
+                L[i][j][k] = float(L[i][j][k])
+    return (L)
+
+
+#PROGRAM UTAMA (CONTOH)
+#L = createListMatrix (3,3,3)
+#L[0] = [[3,5,8],[0,1,6],[10,20,9]]
+#L[1] = [[4,3,2],[3,1,6],[8,0,1]]
+#L[2] = [[2,4,2],[0,1,3],[0,4,2]]
+
+#M = createMatrix(3,3)
+#M[0] = [2,1,3]
+#M[1] = [4,-2,5]
+#M[2] = [-3,-1,7]
+
+#print(determinant(M))
+#M = LambdaIMinA(M,2)
+#displayMatrix(M)

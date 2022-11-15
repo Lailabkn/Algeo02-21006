@@ -6,7 +6,7 @@ from Matrix import *
 def eigenvalue(matriks):
     lamda = sy.symbols('y')
     Mat = matriks
-    i = sy.eye(len(Mat))  #fungsi identitas di sympy, bisa juga pake fungsi kita sendiri kalo udah bikin fungsi identitas
+    i = np.identity(len(Mat), dtype=float)  #fungsi identitas di sympy, bisa juga pake fungsi kita sendiri kalo udah bikin fungsi identitas
     Min = Mat - np.dot(lamda, i) #perkalian dot di numpy, bisa juga pake fungsi kalimatriks
     det = determinant(Min) #fungsi determinan di cobi.py
     hasil = sy.solve(det) #fungsi solve di sympy

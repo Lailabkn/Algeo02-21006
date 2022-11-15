@@ -26,7 +26,7 @@ def eigenvector(matriks):
 # v = eigenvector
     lamda = sy.symbols('y')
     Mat = matriks
-    i = sy.eye(len(Mat))  #fungsi identitas di sympy, bisa juga pake fungsi kita sendiri kalo udah bikin fungsi identitas
+    i = sy.eye(len(Mat), dtype=float)  #fungsi identitas di sympy, bisa juga pake fungsi kita sendiri kalo udah bikin fungsi identitas
     y = np.dot(lamda, i) #perkalian dot di numpy, bisa juga pake fungsi kalimatriks
     Z = y.subs(lamda, eigenvalue(Mat)) # substitusi nilai eigenvalue ke y
     Min = Mat - Z 

@@ -5,7 +5,6 @@ import numpy as np
 from PIL import Image
 from eigen import *
 from EigenVector import *
-from EigenFace import *
 from Operation import *
 
 S = np.array(resize_images(load_images_folder(".\dataset"), (256, 256))) # Load images from folder
@@ -20,4 +19,4 @@ eigvec = np.array(EigenVectorList(cov)) # Calculate eigen vector of covariance
 for i in range(0, len(eigvec), 1): # Calculate eigen face
     eigvec[i] = np.dot(eigvec[i], sel[i]) 
 
-print(eigvec)
+# print(eigvec)

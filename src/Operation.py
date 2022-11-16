@@ -11,9 +11,3 @@ def covarian(listofmatrix):
     for i in range(0, len(listofmatrix), 1):
         hasil.append(np.cov(listofmatrix[i]))
     return (hasil)
-
-def mean(listofmatrix):
-    hasil = []
-    for i in range(0, len(listofmatrix), 1):
-        hasil.append(np.mean(listofmatrix[i], axis=0))
-    return (hasil)

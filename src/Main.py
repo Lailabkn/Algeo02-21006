@@ -3,7 +3,6 @@ from InputGambar import *
 import numpy as np
 from PIL import Image
 from eigen import *
-from Operation import *
 
 # DATASET
 S = np.array(load_images_folder(".\dataset"))

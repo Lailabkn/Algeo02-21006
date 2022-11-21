@@ -1,12 +1,13 @@
-from TestFace import*
+# from TestFace import*
 from Main import*
 
-def euclidean_distance(x, y):
-    for i in range(0,len(x)):
-      dist = np.linalg.norm(x[i] - y)
-    return dist
+# def euclidean_distance(x, y):
+#   hasil = []
+#   for i in range(len(y)):
+#     hasil.append(np.linalg.norm(x-y[i]))
+#   return hasil
 
-tes = '.\dataset\Zendaya.jpg'
+tes = '.\dataset\Alexandra Daddario.jpg'
 TestFace = np.array(load_images_file(tes))
 selisihface = np.array(abs(TestFace - mean))
 covarianface = np.array(np.cov(selisihface))
@@ -21,4 +22,27 @@ eigvec = np.array(EigenVectorList(cov)) # Calculate eigen vector of covariance
 for i in range(0, len(eigvec), 1): # Calculate eigen face
     eigvec[i] = np.dot(eigvec[i], sel[i]) 
 
-print(euclidean_distance(eigvec, eigenfacetest))
+# print (euclidean_distance(eigenfacetest, eigvec))
+# minus = 0
+# ayey = 0 
+# J = euclidean_distance(eigvec, eigenfacetest)
+# if (i == 0) :
+#   minus= J[i]
+#   ayey = i
+# else :
+#   if (J[i] < minus):
+#     minus = J[i]
+#     ayey = i
+#   print(ayey)
+
+minus = 0
+for i in range (len(eigvec)):
+    dist = np.linalg.norm(eigenfacetest - eigvec[i])
+    if (i == 0) :
+        minus = dist
+        ayey = i
+    else :
+        if (minus > dist) :
+            minus = dist
+            ayey = i
+print(ayey)

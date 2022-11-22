@@ -1,1 +1,1 @@
-image = Image.fromarray(S)
+0.5

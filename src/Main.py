@@ -1,65 +1,124 @@
+import tkinter as tk
+from tkinter import filedialog as fd
+from PIL import ImageTk, Image
+from tkinter.messagebox import showinfo
 from InputGambar import *
 import numpy as np
-from PIL import Image
 from eigen import *
 import cv2
 import timeit
 
-# START TIMER
+main = tk.Tk()
+
+main.geometry("1000x600")
+main.title("Face Recognition")
+
+img = tk.PhotoImage(file=".\src\Frame.png", master=main)
+img_label = tk.Label(main, image=img)
+img_label.place(x=0, y=0)
+
 start = timeit.default_timer()
 
-# DATASET
-S = np.array(load_images_folder(".\dataset"))
-H = np.transpose(S)
-mean = np.mean(S, axis=0) # Calculate mean of images
-meanimage = mean.reshape(256, 256)
-sel = np.array(abs(S - mean))# Calculate difference between images and mean
-trans = np.transpose(sel)
-cov = np.array(np.matmul(sel, trans))# Calculate covariance of difference
-cov = cov/len(cov)
-eigenvector = np.array(eigVec(cov)) # Calculate eigen vector of covariance
+def choose_folder():
+    # START TIMER
+    # global start
+    global mean
+    global eigenfaces
+    global weight
+    global S
+    folder_selected = fd.askdirectory()
+    if folder_selected:
+        S = np.array(load_images_folder(".\dataset"))
+        H = np.transpose(S)
+        mean = np.mean(S, axis=0) # Calculate mean of images
+        meanimage = mean.reshape(256, 256)
+        sel = np.array(abs(S - mean))# Calculate difference between images and mean
+        trans = np.transpose(sel)
+        cov = np.array(np.matmul(sel, trans))# Calculate covariance of difference
+        cov = cov/len(cov)
+        eigenvector = np.array(eigVec(cov)) # Calculate eigen vector of covariance
 
-for i in range(len(eigenvector)):
-    norm = Normalize(eigenvector[i])
-    eigenvector[i] = eigenvector[i]/norm
+        for i in range(len(eigenvector)):
+            norm = Normalize(eigenvector[i])
+            eigenvector[i] = eigenvector[i]/norm
 
-eigenfaces = np.array(np.matmul(eigenvector.T, sel)) # Calculate eigen face
-weight = np.array(np.matmul(eigenfaces, sel.T))
+        eigenfaces = np.array(np.matmul(eigenvector.T, sel)) # Calculate eigen face
+        weight = np.array(np.matmul(eigenfaces, sel.T))
+        showinfo("Folder Selected", folder_selected)
 
 
-# TEST(INPUT)
-test = '.\Zendaya13_1806.jpg'
-TestFace = np.array(load_images_file(test))
-selisihface = np.array(abs(TestFace - mean))
-selisihfaces = selisihface.reshape(65536, 1)
-weighttest = np.array(np.matmul(eigenfaces, selisihfaces))
+def choose_file():
+    global mins
+    global weighttest
+    global TestFace
+    filetypes = (('image files', '*.jpg'), ('All files', '*.*'))
+    filename = fd.askopenfilename(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+    if filename:
+        img = Image.open(filename)
+        img = img.resize((256,256), Image.ANTIALIAS)
+        img = ImageTk.PhotoImage(img)
+        panel = tk.Label(main, image=img)
+        panel.image = img
+        panel.place(x=338, y=220)
 
-a = np.array(np.square(weight - weighttest))
-b = np.sum(a, axis=0)
-euclidean = np.sqrt(b)
+        TestFace = np.array(load_images_file(filename))
+        selisihface = np.array(abs(TestFace - mean))
+        selisihfaces = selisihface.reshape(65536, 1)
+        weighttest = np.array(np.matmul(eigenfaces, selisihfaces))
+        a = np.array(np.square(weight - weighttest))
+        b = np.sum(a, axis=0)
+        eucl = np.sqrt(b) 
+        mins = min(eucl)
+        percent_result = (mins/Normalize(weighttest))*100 # Calculate percentage of result
+        res = tk.Label(main, text=percent_result) # show label
+        res.place(x=135, y=423) # show label
+        if (mins < 0.5):
+            for i in range (len(eucl)):
+                if eucl[i] == mins:
+                    hasil = i+1
+            for i in range(len(S)):
+                if i == hasil-1:
+                    img = S[i].reshape(256,256)
+                    img = Image.fromarray(img)
+                    img = img.resize((256,256), Image.ANTIALIAS)
+                    img = ImageTk.PhotoImage(img)
+                    panel = tk.Label(main, image=img)
+                    panel.image = img
+                    panel.place(x=680, y=220)
+        else:
+            showinfo("Result", "Not Found")
 
-# MENGELUARKAN INDEX GAMBAR YANG SAMA(DISTANCE TERKECIL)
-minus = min(euclidean)
-def searchIndex (L, minus):
-    for i in range (len(L)):
-        if (L[i] == minus):
-            return i+1
-index = searchIndex(euclidean, minus)
-print(index)
+def result_time():
+    global hours
+    global minutes
+    global secs
+    global text
+    global milisec
+    stop = timeit.default_timer()
+    total = stop - start
+    minutes, secs = divmod(total, 60)
+    hours, minutes = divmod(minutes, 60)
+    text = "{:02d}:{:02d}:{:02d}".format((hours), (minutes), (secs))
+    time = tk.Label(main, text=text)
+    time.place(x=570, y=520)
 
-# MENGELUARKAN GAMBAR YANG SAMA (RGB)
-for i in range(len(S)):
-    if i == index-1:
-        S = S[i].reshape(256, 256)
-        S_rgb = cv2.cvtColor(S, cv2.COLOR_BGR2RGB)
-        image = Image.fromarray(S_rgb)
-        image.show()
-
-# STOP TIMER
-stop = timeit.default_timer()
-total = stop - start
-mins, secs = divmod(total, 60)
-hours, mins = divmod(mins, 60)
 
 # MENGELUARKAN WAKTU EKSEKUSI
-print("Time: %d:%02d:%02d" % (hours, mins, secs))
+# print("Time: %d:%02d:%02d" % (hours, mins, secs))
+
+button1 = tk.Button(main, text="Choose Folder", font=("Arial", 12), command=choose_folder)
+button1.place(x=45, y=238, relx=0.01, rely=0.01)
+
+button2 = tk.Button(main, text="Choose File", font=("Arial", 12), command=choose_file)
+button2.place(x=45, y=350, relx=0.01, rely=0.01)
+
+# label1 = tk.Label(main, text=percent_result(), font=("Arial", 15))
+# label1.place(x=135, y=423)
+
+# label2 = tk.Label(main, text=result_time(), font=("Arial", 15))
+# label2.place(x=570, y=520)
+
+main.mainloop()

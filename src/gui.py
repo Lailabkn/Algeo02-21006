@@ -2,17 +2,18 @@ import tkinter as tk
 from tkinter import filedialog as fd
 from PIL import ImageTk, Image
 from tkinter.messagebox import showinfo
+from Main import *
 
 main = tk.Tk()
 
 main.geometry("1000x600")
 main.title("Face Recognition")
 
-img = tk.PhotoImage(file=".\src\GUI\Frame.png", master=main)
+img = tk.PhotoImage(file=".\src\Frame.png", master=main)
 img_label = tk.Label(main, image=img)
 img_label.place(x=0, y=0)
 
-def display_image():
+def display_input_image():
     filetypes = (('image files', '*.jpg'), ('All files', '*.*'))
     filename = fd.askopenfilename(
         title='Open a file',
@@ -25,6 +26,9 @@ def display_image():
         panel = tk.Label(main, image=img)
         panel.image = img
         panel.place(x=338, y=220)
+        # TestFace = np.array(load_images_file(filename))
+        # selisihface = np.array(abs(TestFace - mean))
+        # eigenfacestest = np.array(np.matmul(eigenfaces, selisihface))
 
 def choose_folder():
     folder_selected = fd.askdirectory()
@@ -34,7 +38,7 @@ def choose_folder():
 button1 = tk.Button(main, text="Choose File", font=("Arial", 12), command=choose_folder)
 button1.place(x=45, y=238, relx=0.01, rely=0.01)
 
-button2 = tk.Button(main, text="Choose File", font=("Arial", 12), command=display_image)
+button2 = tk.Button(main, text="Choose File", font=("Arial", 12), command=display_input_image)
 button2.place(x=45, y=350, relx=0.01, rely=0.01)
 
 label1 = tk.Label(main, text="result", font=("Arial", 15))

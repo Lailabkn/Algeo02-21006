@@ -26,7 +26,9 @@ https://itbdsti-my.sharepoint.com/:w:/g/personal/13521140_mahasiswa_itb_ac_id/EY
 - Figma -- 9.0
 
 ## Setup
-install this repository and then run file gui.py
+1. install this repository and then run file main.py
+2. click open folder button and then choose the folder of the dataset you want, and wait until the notification pops up
+3. click open file button to choose your image test, wait until the result come
 
 ## Project Status
 COMPLETE

@@ -6,8 +6,6 @@
 2. Laila Bilbina Khoiru Nisa  (13521016)
 3. Ryan Samuel Chandra        (13521140)
 
-link laporan : 
-https://itbdsti-my.sharepoint.com/:w:/g/personal/13521140_mahasiswa_itb_ac_id/EY0BhyBboBhEnHLXfRSNwRsBIfxEopzjJI76f4rlMeUR0w?e=NBtZwh
 
 ## Table of Contents
 * [General Info](#general-information)

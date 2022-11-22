@@ -76,7 +76,7 @@ def choose_file():
         percent_result = (mins/Normalize(weighttest))*100 # Calculate percentage of result
         res = tk.Label(main, text=percent_result) # show label
         res.place(x=135, y=423) # show label
-        if (mins < 0.5): # if minimum euclidean distance < 0.5
+        if (mins < 62500000):
             for i in range (len(eucl)): 
                 if eucl[i] == mins:
                     hasil = i+1

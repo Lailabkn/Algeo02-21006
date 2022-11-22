@@ -17,11 +17,7 @@ img = tk.PhotoImage(file=".\src\Frame.png", master=main)
 img_label = tk.Label(main, image=img)
 img_label.place(x=0, y=0)
 
-start = timeit.default_timer()
-
 def choose_folder():
-    # START TIMER
-    # global start
     global mean
     global eigenfaces
     global weight
@@ -51,6 +47,9 @@ def choose_file():
     global mins
     global weighttest
     global TestFace
+    # START TIMER
+    global start
+    start = timeit.default_timer()
     filetypes = (('image files', '*.jpg'), ('All files', '*.*'))
     filename = fd.askopenfilename(
         title='Open a file',
@@ -88,6 +87,7 @@ def choose_file():
                     panel = tk.Label(main, image=img)
                     panel.image = img
                     panel.place(x=680, y=220)
+                    result_time()
         else:
             showinfo("Result", "Not Found")
 
@@ -101,24 +101,15 @@ def result_time():
     total = stop - start
     minutes, secs = divmod(total, 60)
     hours, minutes = divmod(minutes, 60)
-    text = "{:02d}:{:02d}:{:02d}".format((hours), (minutes), (secs))
+    text = "{:02d}:{:02d}:{:02d}".format(int(hours), int(minutes), int(secs))
     time = tk.Label(main, text=text)
     time.place(x=570, y=520)
 
-
-# MENGELUARKAN WAKTU EKSEKUSI
-# print("Time: %d:%02d:%02d" % (hours, mins, secs))
 
 button1 = tk.Button(main, text="Choose Folder", font=("Arial", 12), command=choose_folder)
 button1.place(x=45, y=238, relx=0.01, rely=0.01)
 
 button2 = tk.Button(main, text="Choose File", font=("Arial", 12), command=choose_file)
 button2.place(x=45, y=350, relx=0.01, rely=0.01)
-
-# label1 = tk.Label(main, text=percent_result(), font=("Arial", 15))
-# label1.place(x=135, y=423)
-
-# label2 = tk.Label(main, text=result_time(), font=("Arial", 15))
-# label2.place(x=570, y=520)
 
 main.mainloop()

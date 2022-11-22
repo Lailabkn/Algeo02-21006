@@ -1,1 +1,1 @@
-print(min(euclidean))
+image = Image.fromarray(S)

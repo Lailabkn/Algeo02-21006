@@ -27,20 +27,20 @@ def QR_Decomposition(matrix):
 
 # mengeluarkan eigen value
 def eigVal(matrix):
-    pQ = np.eye(matrix.shape[0])
-    X = np.copy(matrix)
-    for i in range(10):
-        Q, R = QR_Decomposition(X)
+    pQ = np.eye(matrix.shape[0]) # initialize matrix Q
+    X = np.copy(matrix) # copy matrix
+    for i in range(10): # loop 10x
+        Q, R = QR_Decomposition(X) # get Q and R from QR Decomposition
         pQ = pQ @ Q
         X = R @ Q
-    return np.diag(X)
+    return np.diag(X) # return eigen value
 
 # mengeluarkan eigen vector
 def eigVec(matrix):
-    pQ = np.eye(matrix.shape[0])
-    X = np.copy(matrix)
-    for i in range(10):
-        Q, R = QR_Decomposition(X)
+    pQ = np.eye(matrix.shape[0]) # initialize matrix Q
+    X = np.copy(matrix) # copy matrix
+    for i in range(10): # loop 10x
+        Q, R = QR_Decomposition(X) # get Q and R from QR Decomposition
         pQ = pQ @ Q
         X = R @ Q
-    return pQ
+    return pQ # return eigen vector
